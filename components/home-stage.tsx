@@ -1,7 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { motion, useScroll, useTransform } from "motion/react"
+import { useEffect, useState } from "react"
+import { motion } from "motion/react"
+import {
+  AnimatedTestimonials,
+  type Testimonial,
+} from "@/components/animated-testimonials"
 import { SocialIcon, socials } from "@/components/site-shell"
 import { projects, type Project } from "@/lib/content"
 
@@ -19,24 +23,17 @@ const spring = {
   duration: 0.3,
 }
 
-const columns = [
-  {
-    y: ["-8%", "2%"] as [string, string],
-    className: "-mt-2",
-    tiles: [{ src: "/pushlog.jpg", slug: "pushlog", label: "View PushLog" }],
-  },
-  {
-    y: ["12%", "4%"] as [string, string],
-    className: "mt-[-35%]",
-    tiles: [
-      {
-        src: "/bmore-tech-fest.jpg",
-        slug: "bmore-tech-fest",
-        label: "View Bmore Tech Fest",
-      },
-    ],
-  },
-]
+const designations: Record<string, string> = {
+  pushlog: "Chrome extension",
+}
+
+const testimonials: Testimonial[] = projects.map((project) => ({
+  name: project.name,
+  designation: project.when ?? designations[project.slug] ?? "Project",
+  quote: project.description,
+  src: project.image ?? "",
+  slug: project.slug,
+}))
 
 function ProjectPanel({
   project,
@@ -140,46 +137,13 @@ function ProjectPanel({
 }
 
 export function HomeStage() {
-  const track = useRef<HTMLDivElement>(null)
-  const stage = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: track })
-  const rotateX = useTransform(scrollYProgress, [0, 0.5], [75, 0])
-  const scale = useTransform(scrollYProgress, [0.5, 0.9], [1.2, 1])
-  const yColumns = [
-    useTransform(scrollYProgress, [0.5, 1], columns[0].y),
-    useTransform(scrollYProgress, [0.5, 1], columns[1].y),
-  ]
   const [openSlug, setOpenSlug] = useState<string | null>(null)
   const open = projects.find((project) => project.slug === openSlug) ?? null
 
-  function openFromPoint(clientX: number, clientY: number) {
-    const root = stage.current
-    if (!root) return
-
-    const stack = document.elementsFromPoint(clientX, clientY)
-    for (const node of stack) {
-      if (!(node instanceof Element)) continue
-      const tile = node.closest("[data-project-slug]")
-      if (tile instanceof HTMLElement && root.contains(tile)) {
-        const slug = tile.dataset.projectSlug
-        if (slug) {
-          setOpenSlug(slug)
-          return
-        }
-      }
-    }
-
-    // 3D tilt can miss the transformed hit target; map by column instead.
-    const bounds = root.getBoundingClientRect()
-    if (clientY < bounds.top + bounds.height * 0.28) return
-    if (clientX < bounds.left || clientX > bounds.right) return
-    setOpenSlug(clientX < bounds.left + bounds.width / 2 ? "pushlog" : "bmore-tech-fest")
-  }
-
   return (
-    <div className="relative bg-white text-[hsl(240_10%_3.9%)]">
+    <div className="relative bg-white text-neutral-950">
       <motion.div
-        className="pointer-events-none relative z-20 -mb-12 place-self-center px-6 pt-12 text-center"
+        className="relative z-20 mx-auto max-w-3xl px-6 pt-10 text-center md:pt-12"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
@@ -198,14 +162,14 @@ export function HomeStage() {
         <motion.div
           variants={fade}
           transition={spring}
-          className="my-6 flex flex-col items-center gap-4"
+          className="mt-5 mb-2 flex flex-col items-center gap-3"
         >
           <p className="font-sans text-base tracking-tight text-neutral-500 md:text-lg">
             Follow me
           </p>
           <nav
             aria-label="Social"
-            className="pointer-events-auto flex items-center justify-center gap-5 md:gap-6"
+            className="flex items-center justify-center gap-5 md:gap-6"
           >
             {socials.map((item) => (
               <a
@@ -223,92 +187,10 @@ export function HomeStage() {
         </motion.div>
       </motion.div>
 
-      <div
-        aria-hidden
-        className="pointer-events-none absolute z-10 h-[70vh] w-full"
-        style={{
-          background: "linear-gradient(to right, gray, rebeccapurple, blue)",
-          filter: "blur(84px)",
-          mixBlendMode: "screen",
-        }}
+      <AnimatedTestimonials
+        testimonials={testimonials}
+        onSelect={setOpenSlug}
       />
-
-      <div
-        ref={track}
-        className="relative z-10 h-[350vh] min-h-[120vh]"
-        style={{
-          perspective: "1000px",
-          perspectiveOrigin: "center top",
-          transformStyle: "preserve-3d",
-        }}
-      >
-        <div
-          ref={stage}
-          className="sticky left-0 top-0 h-svh min-h-[30rem] w-full cursor-pointer overflow-hidden"
-          style={{
-            perspective: "1000px",
-            perspectiveOrigin: "center top",
-            transformStyle: "preserve-3d",
-            transformOrigin: "50% 50%",
-          }}
-          onClick={(event) => openFromPoint(event.clientX, event.clientY)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" || event.key === " ") {
-              event.preventDefault()
-              const bounds = stage.current?.getBoundingClientRect()
-              if (!bounds) return
-              openFromPoint(bounds.left + bounds.width * 0.75, bounds.top + bounds.height * 0.7)
-            }
-          }}
-        >
-          <motion.div
-            className="relative mx-auto grid h-auto w-full max-w-3xl grid-cols-2 gap-2 rounded-2xl px-3 pt-[28vh] sm:gap-3 sm:px-4 md:max-w-4xl"
-            style={{
-              rotateX,
-              scale,
-              transformStyle: "preserve-3d",
-              perspective: "1000px",
-            }}
-          >
-            {columns.map((column, index) => (
-              <motion.div
-                key={index}
-                className={`relative flex w-full flex-col gap-2 sm:gap-3 ${column.className}`}
-                style={{ y: yColumns[index] }}
-              >
-                {column.tiles.map((tile) => (
-                  <div
-                    key={tile.slug}
-                    data-project-slug={tile.slug}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={tile.label}
-                    onClick={(event) => {
-                      event.stopPropagation()
-                      setOpenSlug(tile.slug)
-                    }}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter" || event.key === " ") {
-                        event.preventDefault()
-                        event.stopPropagation()
-                        setOpenSlug(tile.slug)
-                      }
-                    }}
-                    className="group relative w-full cursor-pointer overflow-hidden rounded-md bg-neutral-100 shadow outline-none transition duration-300 hover:brightness-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    <img
-                      src={tile.src}
-                      alt=""
-                      draggable={false}
-                      className="pointer-events-none aspect-video block h-auto w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-                    />
-                  </div>
-                ))}
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </div>
 
       {open ? <ProjectPanel project={open} onClose={() => setOpenSlug(null)} /> : null}
     </div>
