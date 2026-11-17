@@ -6,9 +6,11 @@ import { guide } from "@/lib/content"
 export function GuideForm({
   id = "guide",
   error = "",
+  variant = "card",
 }: {
   id?: string
   error?: string
+  variant?: "card" | "line"
 }) {
   const [email, setEmail] = useState("")
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">(
@@ -56,6 +58,74 @@ export function GuideForm({
     link.remove()
     URL.revokeObjectURL(url)
     setStatus("done")
+  }
+
+  if (variant === "line") {
+    return (
+      <form
+        id={id}
+        method="post"
+        action="/api/guide"
+        onSubmit={onSubmit}
+        className="relative mx-auto mt-8 max-w-md text-left"
+      >
+        <p className="text-center text-xs font-medium uppercase tracking-[0.18em] text-neutral-500">
+          Everyday AI
+        </p>
+        <p className="mt-2 text-center text-sm leading-relaxed text-neutral-600">
+          The newsletter. Same email gets you the free guide, Use AI to Get Ahead.
+        </p>
+        {status === "done" ? (
+          <div className="mt-4 text-center" role="status">
+            <p>The PDF is downloading.</p>
+            <p className="mt-2 text-sm">
+              If it&apos;s not,{" "}
+              <a href="/api/guide/download" className="underline underline-offset-4">
+                download it
+              </a>
+              .
+            </p>
+          </div>
+        ) : (
+          <>
+            <label htmlFor={`${id}-email`} className="sr-only">
+              Email
+            </label>
+            <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+              <input
+                id={`${id}-email`}
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="you@email.com"
+                className="h-11 w-full rounded-md border border-neutral-300 bg-white px-4 text-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700"
+              />
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="inline-flex h-11 shrink-0 items-center justify-center rounded-md bg-indigo-700 px-4 text-sm font-medium text-white hover:bg-indigo-800 disabled:opacity-60"
+              >
+                {status === "loading" ? "Downloading…" : "Download the PDF"}
+              </button>
+            </div>
+            {status === "error" ? (
+              <p className="mt-2 text-sm text-red-700" role="alert">
+                {message}
+              </p>
+            ) : null}
+          </>
+        )}
+        <div className="absolute -left-[9999px] h-0 overflow-hidden" aria-hidden>
+          <label>
+            Company
+            <input type="text" name="company" tabIndex={-1} autoComplete="off" />
+          </label>
+        </div>
+      </form>
+    )
   }
 
   return (

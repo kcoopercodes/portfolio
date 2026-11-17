@@ -53,21 +53,45 @@ export default async function ProjectPage({
         </p>
       </header>
 
-      <div className="mt-12 flex flex-col gap-7 text-[1.0625rem] leading-[1.85] text-foreground/90 text-pretty">
-        {project.body.map((para, i) => (
-          <p key={i}>{para}</p>
-        ))}
-      </div>
+      {project.problem && project.solution ? (
+        <div className="mt-12 flex flex-col gap-8 text-[1.0625rem] leading-[1.85] text-pretty">
+          <div>
+            <h2 className="text-xs font-semibold uppercase tracking-wide text-foreground">
+              The problem
+            </h2>
+            <p className="mt-3 text-foreground/90">{project.problem}</p>
+          </div>
+          <div>
+            <h2 className="text-xs font-semibold uppercase tracking-wide text-foreground">
+              The solution
+            </h2>
+            <p className="mt-3 text-foreground/90">{project.solution}</p>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-12 flex flex-col gap-7 text-[1.0625rem] leading-[1.85] text-foreground/90 text-pretty">
+          {project.body.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
+        </div>
+      )}
 
-      <a
-        href={project.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-10 inline-flex items-center gap-1.5 rounded-sm border-2 border-foreground bg-primary px-5 py-2.5 text-sm font-medium text-foreground hover:bg-foreground hover:text-background"
-      >
-        Visit project
-        <ArrowUpRight className="h-4 w-4" aria-hidden />
-      </a>
+      <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        {(project.actions ?? [{ label: project.linkLabel, href: project.link }]).map(
+          (action) => (
+            <a
+              key={action.href}
+              href={action.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-1.5 rounded-sm border-2 border-foreground bg-primary px-5 py-2.5 text-sm font-medium text-foreground hover:bg-foreground hover:text-background"
+            >
+              {action.label}
+              <ArrowUpRight className="h-4 w-4" aria-hidden />
+            </a>
+          ),
+        )}
+      </div>
 
       <footer className="mt-16 border-t-2 border-foreground pt-8">
         <Link

@@ -1,12 +1,18 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Geist } from 'next/font/google'
+import { Domine, Open_Sans } from 'next/font/google'
 import { SiteShell } from '@/components/site-shell'
 import './globals.css'
 
-const geist = Geist({
+const openSans = Open_Sans({
   subsets: ['latin'],
-  variable: '--font-geist-sans',
+  variable: '--font-open-sans',
+  display: 'swap',
+})
+
+const domine = Domine({
+  subsets: ['latin'],
+  variable: '--font-domine',
   display: 'swap',
 })
 
@@ -41,7 +47,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`light bg-background ${geist.variable}`}
+      className={`light bg-background ${openSans.variable} ${domine.variable}`}
     >
       <body className="antialiased font-sans">
         <SiteShell>{children}</SiteShell>

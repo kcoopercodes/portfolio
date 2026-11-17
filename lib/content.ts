@@ -128,11 +128,19 @@ export const archive = [
   { label: "Tools", href: "/tools", note: "What I use to work." },
 ]
 
+export type ProjectAction = { label: string; href: string }
+
 export type Project = {
   slug: string
   name: string
   description: string
   link: string
+  linkLabel: string
+  image?: string
+  when?: string
+  problem?: string
+  solution?: string
+  actions?: ProjectAction[]
   body: string[]
 }
 
@@ -142,11 +150,45 @@ export const projects: Project[] = [
     name: "PushLog",
     description:
       "A Chrome extension that shows Adobe Analytics, AEP Web SDK, and Google Tag Manager events in a timeline, without opening DevTools.",
-    link: "https://github.com/kcooperdev/pushlog",
+    link: "https://chromewebstore.google.com/detail/pushlog/bhmmfdgjhpeppdombgiaffaaiaafncpj?hl=en",
+    linkLabel: "View project",
+    image: "/pushlog.jpg",
+    problem:
+      "Analytics events fire and disappear. Checking them usually means opening DevTools and digging through callback noise before the evidence is gone.",
+    solution:
+      "PushLog captures events as they happen and puts them in a searchable timeline. Adobe Client Data Layer, AEP Web SDK, and Google Tag Manager stay separated, so you can validate the payload without leaving the page.",
+    actions: [
+      {
+        label: "View project",
+        href: "https://chromewebstore.google.com/detail/pushlog/bhmmfdgjhpeppdombgiaffaaiaafncpj?hl=en",
+      },
+    ],
     body: [
       "Analytics events fire and disappear. Checking them usually means opening DevTools and digging through callback noise.",
       "PushLog captures events as they happen and puts them in a searchable timeline. It separates Adobe Client Data Layer activity, tracks AEP Web SDK events, and monitors Google Tag Manager.",
       "The point is a clean view of what actually fired, so an analytics engineer can validate the payload without leaving the page.",
+    ],
+  },
+  {
+    slug: "bmore-tech-fest",
+    name: "Bmore Tech Fest",
+    description: "Three days in Baltimore for the people building the city.",
+    link: "https://www.bmoretechweek.com/",
+    linkLabel: "View website",
+    image: "/bmore-tech-fest.jpg",
+    when: "April 26–28, 2027 · 4MLK, Baltimore",
+    problem:
+      "Baltimore is full of people solving real problems, and they still miss each other. The useful rooms were scattered. Getting to one of them once meant walking and taking the bus for an hour.",
+    solution:
+      "Bmore Tech Fest puts those people in one building. April 26–28, 2027, at 4MLK in Baltimore. Talks, workshops, and time between them to actually meet. Be in the room.",
+    actions: [
+      { label: "View website", href: "https://www.bmoretechweek.com/" },
+      { label: "Sponsor", href: "https://www.bmoretechweek.com/sponsors" },
+      { label: "Apply to speak", href: "https://www.bmoretechweek.com/speak" },
+    ],
+    body: [
+      "Baltimore is full of people solving real problems, and they still miss each other. The useful rooms were scattered. Getting to one of them once meant walking and taking the bus for an hour.",
+      "Bmore Tech Fest puts those people in one building. April 26–28, 2027, at 4MLK in Baltimore. Talks, workshops, and time between them to actually meet.",
     ],
   },
 ]
