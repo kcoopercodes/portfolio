@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { BookForm } from "@/components/book-form"
 import { PageHeader } from "@/components/page-header"
 const description =
-  "Talks and workshops on practical AI, career growth, and community building. Sponsors and partners for Bmore Tech Nights and Baltimore Tech Week can use this form too."
+  "Talks and workshops on practical AI, career growth, and community building. Sponsors and partners for Baltimore Tech Week can use this form too."
 
 export const metadata: Metadata = {
   title: "Book",

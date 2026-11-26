@@ -7,7 +7,7 @@ export const site = {
   label: "Engineer. AI educator. Community builder.",
   audience: "For everyday people getting started.",
   credentials:
-    "Software engineer at CarMax. Founder of Bmore Tech Nights and Baltimore Tech Week.",
+    "Software engineer at CarMax. Founder of Bmore Tech Week.",
   headline: "Build the skill. Build the work. Find your people.",
   promise:
     "I help everyday people use AI to build practical skills, advance their careers, grow businesses, and unlock new opportunities.",
@@ -34,7 +34,7 @@ export const offers = [
   {
     detail: "Meaningful connections",
     leaves: "You leave knowing where to show up next.",
-    body: "Bmore Tech Nights and Baltimore Tech Week.",
+    body: "Baltimore Tech Week.",
   },
 ]
 
@@ -62,7 +62,7 @@ export const story = [
   "I graduated with a theater degree and no job. I waited tables, worked day jobs, and didn't get a car until I was 25. Getting to a tech event meant walking and taking the bus for an hour. I went anyway.",
   "In 2015 I worked a tech conference and started a bootcamp the next week. I failed out. I was told tech wasn't for me, and to try something else.",
   "I bought a laptop on eBay for $200 and taught myself through freeCodeCamp and YouTube. I didn't make an excuse. I got back up and tried again. I've been in tech since then.",
-  "I build the rooms I used to take the bus to get to: Bmore Tech Nights and Baltimore Tech Week.",
+  "I build the rooms I used to take the bus to get to: Baltimore Tech Week.",
 ]
 
 export const talks = [
@@ -75,11 +75,6 @@ export const talks = [
 export const podcasts = ["Tech Woke", "Baltimore Creators"]
 
 export const rooms = [
-  {
-    name: "Bmore Tech Nights",
-    href: "https://bmoretechnights.com",
-    note: "A monthly meetup for builders, career changers, founders, and anyone tech-curious.",
-  },
   {
     name: "Baltimore Tech Week",
     href: "https://bmoretechweek.com",

@@ -21,11 +21,6 @@ export const metadata: Metadata = {
 const roles: { org: string; role: string; link?: string }[] = [
   { org: "CarMax", role: "Software engineer", link: "https://www.carmax.com" },
   {
-    org: "Bmore Tech Nights",
-    role: "Founder",
-    link: "https://bmoretechnights.com",
-  },
-  {
     org: "Baltimore Tech Week",
     role: "Founder",
     link: "https://bmoretechweek.com",
@@ -81,7 +76,7 @@ export default function AboutPage() {
           ))}
         </ul>
         <p className="mt-4 text-sm leading-relaxed text-pretty">
-          Sponsors and partners for Bmore Tech Nights and Baltimore Tech Week,{" "}
+          Sponsors and partners for Baltimore Tech Week,{" "}
           <Link
             href="/book?kind=partner"
             className="font-medium text-foreground underline underline-offset-4"
